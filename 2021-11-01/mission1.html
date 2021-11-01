@@ -32,12 +32,11 @@
             executionSequence.push("\n" + shape + ": \n" + equation);
         }
 
-        function getCircle(...p) {
-            if (p.length === 2) {                
-                return getCircles(p);
+        function getCircle(...radius) {
+            if (radius.length === 2) {                
+                return getCircles(radius);
             }
 
-            let radius = p;
             return `${radius} * ${radius} * ${Math.PI} = ` + calculateCircle(radius);
         }
 
@@ -46,12 +45,12 @@
         }
 
         function getCircles(p) {
-            let n = p[1];
+            let maxRadius = p[1];
             let equation = '';
             let subTotal = new Array();
             let total = 0;
             
-            for (let radius = p[0]; radius <= n; radius++) {
+            for (let radius = p[0]; radius <= maxRadius; radius++) {
                 equation += getCircle(radius) + '\n';
                 subTotal.push(calculateCircle(radius));
                 total += calculateCircle(radius);
