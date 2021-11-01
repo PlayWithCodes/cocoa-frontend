@@ -7,92 +7,113 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <p id="circle"></p>
-    <p id="rect"></p>
-    <p id="trapezoid"></p>
-    <p id="circles"></p> -->
-    <p id="executionSequence"></p>
-
     <script>
+        // Node.js는 처음이라서 학습하면서 차츰 적용해보도록 하겠습니다.
+
+        let executionSequence = new Array();
+
         function getArea(shape, ...p) {
-            let result = 0;
-    
-            switch (shape) {
+            switch (shape.toLowerCase()) {
                 case 'circle':
-                    result = getCircle(p);
+                    pushExecutionSequence(shape, getCircle(p));
                 break;
     
                 case 'rect':
-                    result = getRect(p);
+                    pushExecutionSequence(shape, getRect(p));
                 break;
     
                 case 'trapezoid':
-                    result = getTrapezoid(p);
+                    pushExecutionSequence(shape, getTrapezoid(p));
                 break;
 
                 case 'circles':
-                    result = getCircles(p);
+                    pushExecutionSequence(shape, getCircles(p));
                 break;
             }
-    
-            return result;
         }
 
-        let excutionSequence = new Array();
+        function pushExecutionSequence(shape, equation) {
+            executionSequence.push("\n" + shape + ": \n" + equation);
+        }
 
         function getCircle(p) {
-            excutionSequence.push('circle: ' + getCircleArea(p[0]));
-            // return getCircleArea(p[0]);
+            let radius = p;
+            return `${radius} * ${radius} * ${Math.PI} = ` + calculateCircle(radius);
         }
 
-        function getCircles(p) {
-            
-            let n = p[1];
-            let result = 0;
-            
-            for (let radius = p[0]; radius <= n; radius++) {
-                result += getCircleArea(radius);
-            }
-            
-            excutionSequence.push('circles: ' + result);
-            // return result;
-        }
-
-        function getCircleArea(radius) {
+        function calculateCircle(radius) {
             return Math.round(radius * radius * Math.PI);
         }
 
+        function getCircles(p) {
+            let n = p[1];
+            let equation = '';
+            let subTotal = new Array();
+            let total = 0;
+            
+            for (let radius = p[0]; radius <= n; radius++) {
+                equation += getCircle(radius) + '\n';
+                subTotal.push(calculateCircle(radius));
+                total += calculateCircle(radius);
+            }
+            
+            return equation + subTotal.join(" + ") + " = " + total;
+        }
+
         function getRect(p) {
-            let lower = p[0];
+            let lowerBase = p[0];
             let height = p[1];
             
-            excutionSequence.push('rect: ' + lower * height);
-            // return lower * height;
+            return `${lowerBase} * ${height} = ` + lowerBase * height;
         }
 
         function getTrapezoid(p) {
-            
-            let upper = p[0];
-            let lower = p[1];
+            let upperBase = p[0];
+            let lowerBase = p[1];
             let height = p[2];
             
-            excutionSequence.push('trapezoid: ' + ((upper + lower) * height) / 2);
-            // return ((upper + lower) * height) / 2;
+            return `(${upperBase} + ${lowerBase}) * ${height} / 2 = ` + ((upperBase + lowerBase) * height) / 2;
         }
 
-        function printExecutionSequence() {            
-            return "계산수행순서: " + excutionSequence.join(", ");
+        function printExecutionSequence() {
+            console.log("계산수행순서: " + executionSequence.join("\n"));
         }
-    
-        // document.getElementById("circle").innerHTML = getArea('circle', 10);
-        // document.getElementById("rect").innerHTML = getArea('rect', 10, 15);
-        // document.getElementById("trapezoid").innerHTML = getArea('trapezoid', 10, 15, 12);
-        // document.getElementById("circles").innerHTML = getArea('circles', 1, 10);
+
         getArea('circle', 10);
         getArea('rect', 10, 15);
-        getArea('trapezoid', 10, 15, 0);
+        getArea('trapezoid', 10, 15, 12);
         getArea('circles', 1, 10);
-        document.getElementById("executionSequence").innerHTML = printExecutionSequence();
+
+        printExecutionSequence();
     </script>
 </body>
 </html>
+
+<!-- 
+
+실행 결과
+
+계산수행순서: 
+circle: 
+10 * 10 * 3.141592653589793 = 314
+
+rect: 
+10 * 15 = 150
+
+trapezoid: 
+(10 + 15) * 12 / 2 = 150
+
+circles: 
+1 * 1 * 3.141592653589793 = 3
+2 * 2 * 3.141592653589793 = 13
+3 * 3 * 3.141592653589793 = 28
+4 * 4 * 3.141592653589793 = 50
+5 * 5 * 3.141592653589793 = 79
+6 * 6 * 3.141592653589793 = 113
+7 * 7 * 3.141592653589793 = 154
+8 * 8 * 3.141592653589793 = 201
+9 * 9 * 3.141592653589793 = 254
+10 * 10 * 3.141592653589793 = 314
+3 + 13 + 28 + 50 + 79 + 113 + 154 + 201 + 254 + 314 = 1209 
+
+-->
