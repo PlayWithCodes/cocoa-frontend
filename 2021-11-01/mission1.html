@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <p id="circle"></p>
+    <p id="rect"></p>
+    <p id="trapezoid"></p>
+    <p id="circles"></p> -->
+    <p id="executionSequence"></p>
+
+    <script>
+        function getArea(shape, ...p) {
+            let result = 0;
+    
+            switch (shape) {
+                case 'circle':
+                    result = getCircle(p);
+                break;
+    
+                case 'rect':
+                    result = getRect(p);
+                break;
+    
+                case 'trapezoid':
+                    result = getTrapezoid(p);
+                break;
+
+                case 'circles':
+                    result = getCircles(p);
+                break;
+            }
+    
+            return result;
+        }
+
+        let excutionSequence = new Array();
+
+        function getCircle(p) {
+            excutionSequence.push('circle: ' + getCircleArea(p[0]));
+            // return getCircleArea(p[0]);
+        }
+
+        function getCircles(p) {
+            
+            let n = p[1];
+            let result = 0;
+            
+            for (let radius = p[0]; radius <= n; radius++) {
+                result += getCircleArea(radius);
+            }
+            
+            excutionSequence.push('circles: ' + result);
+            // return result;
+        }
+
+        function getCircleArea(radius) {
+            return Math.round(radius * radius * Math.PI);
+        }
+
+        function getRect(p) {
+            let lower = p[0];
+            let height = p[1];
+            
+            excutionSequence.push('rect: ' + lower * height);
+            // return lower * height;
+        }
+
+        function getTrapezoid(p) {
+            
+            let upper = p[0];
+            let lower = p[1];
+            let height = p[2];
+            
+            excutionSequence.push('trapezoid: ' + ((upper + lower) * height) / 2);
+            // return ((upper + lower) * height) / 2;
+        }
+
+        function printExecutionSequence() {            
+            return "계산수행순서: " + excutionSequence.join(", ");
+        }
+    
+        // document.getElementById("circle").innerHTML = getArea('circle', 10);
+        // document.getElementById("rect").innerHTML = getArea('rect', 10, 15);
+        // document.getElementById("trapezoid").innerHTML = getArea('trapezoid', 10, 15, 12);
+        // document.getElementById("circles").innerHTML = getArea('circles', 1, 10);
+        getArea('circle', 10);
+        getArea('rect', 10, 15);
+        getArea('trapezoid', 10, 15, 0);
+        getArea('circles', 1, 10);
+        document.getElementById("executionSequence").innerHTML = printExecutionSequence();
+    </script>
+</body>
+</html>
