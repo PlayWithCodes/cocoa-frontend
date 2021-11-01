@@ -15,7 +15,7 @@
         function getArea(shape, ...p) {
             switch (shape.toLowerCase()) {
                 case 'circle':
-                    pushExecutionSequence(shape, getCircle(p));
+                    pushExecutionSequence(shape, getCircle(...p));
                 break;
     
                 case 'rect':
@@ -25,10 +25,6 @@
                 case 'trapezoid':
                     pushExecutionSequence(shape, getTrapezoid(p));
                 break;
-
-                case 'circles':
-                    pushExecutionSequence(shape, getCircles(p));
-                break;
             }
         }
 
@@ -36,7 +32,11 @@
             executionSequence.push("\n" + shape + ": \n" + equation);
         }
 
-        function getCircle(p) {
+        function getCircle(...p) {
+            if (p.length === 2) {                
+                return getCircles(p);
+            }
+
             let radius = p;
             return `${radius} * ${radius} * ${Math.PI} = ` + calculateCircle(radius);
         }
@@ -56,7 +56,6 @@
                 subTotal.push(calculateCircle(radius));
                 total += calculateCircle(radius);
             }
-            
             return equation + subTotal.join(" + ") + " = " + total;
         }
 
@@ -82,7 +81,7 @@
         getArea('circle', 10);
         getArea('rect', 10, 15);
         getArea('trapezoid', 10, 15, 12);
-        getArea('circles', 1, 10);
+        getArea('circle', 1, 10);
 
         printExecutionSequence();
     </script>
@@ -103,7 +102,7 @@ rect:
 trapezoid: 
 (10 + 15) * 12 / 2 = 150
 
-circles: 
+circle: 
 1 * 1 * 3.141592653589793 = 3
 2 * 2 * 3.141592653589793 = 13
 3 * 3 * 3.141592653589793 = 28
