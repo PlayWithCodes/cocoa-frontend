@@ -10,7 +10,7 @@
     <script>
         // Node.js는 처음이라서 학습하면서 차츰 적용해보도록 하겠습니다.
 
-        let executionSequence = new Array();
+        const executionSequence = new Array();
 
         function getArea(shape, ...p) {
             switch (shape.toLowerCase()) {
@@ -45,9 +45,9 @@
         }
 
         function getCircles(p) {
-            let maxRadius = p[1];
+            const maxRadius = p[1];
+            const subTotal = new Array();
             let equation = '';
-            let subTotal = new Array();
             let total = 0;
             
             for (let radius = p[0]; radius <= maxRadius; radius++) {
@@ -59,16 +59,16 @@
         }
 
         function getRect(p) {
-            let lowerBase = p[0];
-            let height = p[1];
+            const lowerBase = p[0];
+            const height = p[1];
             
             return `${lowerBase} * ${height} = ` + lowerBase * height;
         }
 
         function getTrapezoid(p) {
-            let upperBase = p[0];
-            let lowerBase = p[1];
-            let height = p[2];
+            const upperBase = p[0];
+            const lowerBase = p[1];
+            const height = p[2];
             
             return `(${upperBase} + ${lowerBase}) * ${height} / 2 = ` + ((upperBase + lowerBase) * height) / 2;
         }
