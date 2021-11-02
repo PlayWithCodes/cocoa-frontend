@@ -10,7 +10,7 @@
     <script>
         // Node.js는 처음이라서 학습하면서 차츰 적용해보도록 하겠습니다.
 
-        const executionSequence = new Array();
+        const executionSequence = [];
 
         function getArea(shape, ...p) {
             switch (shape.toLowerCase()) {
@@ -46,7 +46,7 @@
 
         function getCircles(p) {
             const maxRadius = p[1];
-            const subTotal = new Array();
+            const subTotal = [];
             let equation = '';
             let total = 0;
             
