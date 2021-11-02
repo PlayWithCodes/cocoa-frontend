@@ -15,7 +15,7 @@
         function getArea(shape, ...p) {
             switch (shape.toLowerCase()) {
                 case 'circle':
-                    pushExecutionSequence(shape, getCircle(...p));
+                    pushExecutionSequence(shape, getCircle(p));
                 break;
     
                 case 'rect':
@@ -32,7 +32,7 @@
             executionSequence.push("\n" + shape + ": \n" + equation);
         }
 
-        function getCircle(...radius) {
+        function getCircle(radius) {
             if (radius.length === 2) {                
                 return getCircles(radius);
             }
