@@ -16,7 +16,7 @@
             this.order = 0;
             
             this.speak = function(){            
-                console.log("player: " + this.name + ", number: " + this.gameNumberArr[this.order]);
+                console.log(`player: ${this.name}, number: ${this.gameNumberArr[this.order]}`);
                 this.order++;
             }
         }
@@ -25,7 +25,7 @@
 
         // 시작 함수
         function solution(base, gameNum, totalPlayerNum, selectedPlayer){    
-            console.log("\n" + base + "진수, " + gameNum + "개 숫자 까지, 참가자 " + totalPlayerNum + "명");
+            console.log(`\n ${base}진수, ${gameNum}개 숫자 까지, 참가자 ${totalPlayerNum}명`);
 
             // 게임 참가자 생성
             for (let i = 0; i < totalPlayerNum; i++) {
