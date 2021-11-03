@@ -10,13 +10,13 @@
     <script>
 
         // 게임 참가자 객체
-        const player = function(name, myGameNumber){
+        const player = function(name, gameNumberArr){
             this.name = name;
-            this.myGameNumber = myGameNumber;
+            this.gameNumberArr = gameNumberArr;
             this.order = 0;
             
             this.speak = function(){            
-                console.log("player: " + this.name + ", number: " + this.myGameNumber[this.order]);
+                console.log("player: " + this.name + ", number: " + this.gameNumberArr[this.order]);
                 this.order++;
             }
         }
@@ -41,9 +41,9 @@
         }
 
         // 게임시작 함수
-        function startGame(playerArr, convertedGameNumberArr, totalPlayerNum, name){
+        function startGame(playerArr, convertedGameNumberArr, totalPlayerNum, selectedPlayer){
             // 전체 참가자
-            if (typeof name === "undefined") {
+            if (typeof selectedPlayer === "undefined") {
                 for (let i = 0; i < convertedGameNumberArr.length; i++) {
                     playerArr[i % totalPlayerNum].speak();
                 }
@@ -51,22 +51,22 @@
             }
 
             // 선택된 참가자
-            for (let i = 0; i < playerArr[name-1].myGameNumber.length; i++) {
-                playerArr[name-1].speak();
+            for (let i = 0; i < playerArr[selectedPlayer-1].gameNumberArr.length; i++) {
+                playerArr[selectedPlayer-1].speak();
             }    
         }
 
         // 게임넘버를 참가자들에게 나눠주는 함수
         function giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr, gameNum){
-            for (let i = 0; i < totalPlayerNum; i++) {
+            for (let playerIndex = 0; playerIndex < totalPlayerNum; playerIndex++) {
                 const gameNumberArr = [];
 
                 // 각각 게임 참가자에게 해당하는 게임넘버 저장
-                for (let j = i; j < convertedGameNumberArr.length; j+=totalPlayerNum) {
+                for (let j = playerIndex; j < convertedGameNumberArr.length; j+=totalPlayerNum) {
                     gameNumberArr.push(convertedGameNumberArr[j]);                    
                 }
 
-                playerArr[i].myGameNumber = gameNumberArr;
+                playerArr[playerIndex].gameNumberArr = gameNumberArr;
             }
         }
 
