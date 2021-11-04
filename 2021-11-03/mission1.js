@@ -6,7 +6,7 @@ class Player {
         this.gameNumberArr = gameNumberArr;
         this.order = 0;
     }
-    speak() {
+    speakGameNumber() {
         console.log(`player: ${this.name}, number: ${this.gameNumberArr[this.order]}`);
         this.order++;
     };
@@ -25,7 +25,7 @@ function solution(base, gameNum, totalPlayerNum, selectedPlayer) {
 
     const maxGameNumber = gameNum * totalPlayerNum;
     const convertedGameNumberArr = getConvertedGameNumber(maxGameNumber, base);
-    giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr, gameNum);
+    giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr);
     startGame(playerArr, convertedGameNumberArr, totalPlayerNum, selectedPlayer);
 }
 
@@ -34,24 +34,24 @@ function startGame(playerArr, convertedGameNumberArr, totalPlayerNum, selectedPl
     // 전체 참가자
     if (typeof selectedPlayer === "undefined") {
         for (let i = 0; i < convertedGameNumberArr.length; i++) {
-            playerArr[i % totalPlayerNum].speak();
+            playerArr[i % totalPlayerNum].speakGameNumber();
         }
         return;
     }
 
     // 선택된 참가자
     for (let i = 0; i < playerArr[selectedPlayer - 1].gameNumberArr.length; i++) {
-        playerArr[selectedPlayer - 1].speak();
+        playerArr[selectedPlayer - 1].speakGameNumber();
     }
 }
 
 // 게임넘버를 참가자들에게 나눠주는 함수
-function giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr, gameNum) {
+function giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr) {
     for (let playerIndex = 0; playerIndex < totalPlayerNum; playerIndex++) {
         const gameNumberArr = [];
 
         // 각각 게임 참가자에게 해당하는 게임넘버 저장
-        for (let j = playerIndex; j < convertedGameNumberArr.length; j += totalPlayerNum) {
+        for (let j = playerIndex; j < convertedGameNumberArr.length; j+=totalPlayerNum) {
             gameNumberArr.push(convertedGameNumberArr[j]);
         }
 
@@ -67,10 +67,8 @@ function getConvertedGameNumber(maxGameNumber, base) {
     for (let decimal = 0; decimal < maxGameNumber; decimal++) {
         const convertedNum = decimal.toString(base);
 
-        // 십진수에서 진수 변환 시 값[0, 1...]의 길이에 따라 배열에 넣는 부분
-        for (let j = 0; j < convertedNum.length; j++) {
-            convertedGameNumberArr.push(convertedNum[j]);
-        }
+        // 기존 loop방식을 spread연산자로 변경
+        convertedGameNumberArr.push(...convertedNum);
 
         console.log(decimal + ": " + convertedNum);
     }
