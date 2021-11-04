@@ -25,9 +25,7 @@ function solution(base, gameNum, totalPlayerNum, selectedPlayer) {
 
     const maxGameNumber = gameNum * totalPlayerNum;
     const convertedGameNumberArr = getConvertedGameNumber(maxGameNumber, base);
-
     giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberArr, gameNum);
-
     startGame(playerArr, convertedGameNumberArr, totalPlayerNum, selectedPlayer);
 }
 
@@ -65,11 +63,11 @@ function giveGameNumberToPlayers(playerArr, totalPlayerNum, convertedGameNumberA
 function getConvertedGameNumber(maxGameNumber, base) {
     const convertedGameNumberArr = [];
 
-    // 최대 게임넘버 반복
+    // 십진수 최대 게임넘버까지 반복
     for (let decimal = 0; decimal < maxGameNumber; decimal++) {
         const convertedNum = decimal.toString(base);
 
-        // 십진수 진수 변환 시 값[0, 1...]의 길이에 따라 배열에 넣는 부분
+        // 십진수에서 진수 변환 시 값[0, 1...]의 길이에 따라 배열에 넣는 부분
         for (let j = 0; j < convertedNum.length; j++) {
             convertedGameNumberArr.push(convertedNum[j]);
         }
