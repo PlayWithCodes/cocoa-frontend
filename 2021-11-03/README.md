@@ -115,3 +115,49 @@ console.log(strCopy);
 // expected output: Array ["The quick brown fox jumps over the lazy dog."]
 </pre>
 - https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/split
+
+### Set
+Set 객체는 자료형에 관계 없이 원시 값과 객체 참조 모두 유일한 값을 저장할 수 있습니다.
+<pre>
+var mySet = new Set();
+
+mySet.add(1); // Set { 1 }
+mySet.add(5); // Set { 1, 5 }
+mySet.add(5); // Set { 1, 5 }
+mySet.add('some text'); // Set { 1, 5, 'some text' }
+var o = {a: 1, b: 2};
+mySet.add(o);
+
+mySet.add({a: 1, b: 2}); // o와 다른 객체를 참조하므로 괜찮음
+</pre>
+- https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Set
+
+### Map
+맵은 객체와 달리 키를 문자형으로 변환하지 않습니다. 키엔 자료형 제약이 없습니다. map을 사용할 땐 map전용 메서드 set, get 등을 사용해야만 합니다.
+<pre>
+let map = new Map();
+
+map.set('1', 'str1');   // 문자형 키
+map.set(1, 'num1');     // 숫자형 키
+map.set(true, 'bool1'); // 불린형 키
+
+// 객체는 키를 문자형으로 변환한다는 걸 기억하고 계신가요?
+// 맵은 키의 타입을 변환시키지 않고 그대로 유지합니다. 따라서 아래의 코드는 출력되는 값이 다릅니다.
+alert( map.get(1)   ); // 'num1'
+alert( map.get('1') ); // 'str1'
+
+alert( map.size ); // 3
+</pre>
+- https://ko.javascript.info/map-set
+
+### Set과 Map이 Object/Array와 다른 점
+객체 – 키가 있는 컬렉션을 저장함
+배열 – 순서가 있는 컬렉션을 저장함
+맵(Map)은 키가 있는 데이터를 저장한다는 점에서 객체와 유사합니다. 다만, 맵은 키에 다양한 자료형을 허용한다는 점에서 차이가 있습니다.
+셋(Set)은 중복을 허용하지 않는 값을 모아 놓은 특별한 컬렉션입니다. 셋에 키가 없는 값이 저장됩니다.
+
+### 언제 Set과 Map이 유용하게 쓰이나
+
+방문자 방명록을 만든다고 가정해 봅시다. 한 방문자가 여러 번 방문해도 방문자를 중복해서 기록하지 않겠다고 결정 내린 상황입니다. 즉, 한 방문자는 '단 한 번만 기록’되어야 합니다.
+이때 적합한 자료구조가 바로 Set입니다.
+- https://ko.javascript.info/map-set
