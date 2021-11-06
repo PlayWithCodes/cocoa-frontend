@@ -4,18 +4,21 @@ function factorial(number) {
 	const factorialArr = [1];
 
 	for (let i = 2; i <= number; i++) {
-		factorialArr[i - 1] = factorialArr[i - 2] * i;
+		factorialArr.push(factorialArr[i - 2] * i);
 	}
 
 	return factorialArr;
 }
 
 console.log(`1. factorial 함수 \n[${factorial(4)}]\n`);
+
 //#endregion
 
 //#region 2. 배열거르기
+
 const peoples = ["crong!@#", "honux5", "sarah#", "hea3d", "zello", "5lucas"];
-const regEx = new RegExp("[^A-Za-z0-9]"); // A-Za-z0-9 제외 문자 찾기
+const isNotAlphabetNumberRegExp = new RegExp("[^A-Za-z0-9]"); // A-Za-z0-9 제외 문자 찾기
+const isNumberRegExp = new RegExp("[0-9]");
 
 // for/while문을 사용한 버전
 function filterIdVer1() {
@@ -23,7 +26,7 @@ function filterIdVer1() {
 
 	// for 문
 	// for (let i = 0; i < peoples.length; i++) {
-	//     if (!regEx.test(peoples[i])) {
+	//     if (!isNotAlphabetNumberRegExp.test(peoples[i])) {
 	//         filteredPeopleArr.push(peoples[i].replace(/[0-9]/g, ""));
 	//     }
 	// }
@@ -31,8 +34,8 @@ function filterIdVer1() {
 	// while 문
 	let index = 0;
 	while (index < peoples.length) {
-		if (!regEx.test(peoples[index])) {
-			filteredPeopleArr.push(peoples[index].replace(/[0-9]/g, ""));
+		if (!isNotAlphabetNumberRegExp.test(peoples[index])) {
+			filteredPeopleArr.push(peoples[index].replace(isNumberRegExp, ""));
 		}
 		index++;
 	}
@@ -42,7 +45,7 @@ function filterIdVer1() {
 
 // forEach,filter, map등의 고차함수를 사용한 버전
 function filterIdVer2() {
-	return peoples.filter(e => !regEx.test(e)).map(e => e.replace(/[0-9]/g, ""));
+	return peoples.filter(e => !isNotAlphabetNumberRegExp.test(e)).map(e => e.replace(isNumberRegExp, ""));
 }
 
 console.log(`2-1. for/while문을 사용한 버전 \n[${filterIdVer1()}]\n`);
@@ -56,10 +59,11 @@ function caculateAverageGrade() {
 	const studentAverageGradeArr = [];
 	const studentAverageMaxGradeArr = [];
 	const gradeSumReducer = (previousGrade, currentGrade) => previousGrade + currentGrade;
-	const selectMaxGradegradeSumReducer = (previousGrade, currentGrade) => previousGrade > currentGrade ? previousGrade : currentGrade;
+	const selectMaxGradegradeSumReducer 
+		= (previousGrade, currentGrade) => previousGrade > currentGrade ? previousGrade : currentGrade;
 
 	grades.forEach(e => {
-		studentAverageGradeArr.push(Math.round(e.reduce(gradeSumReducer) / e.length));
+		studentAverageGradeArr.push((e.reduce(gradeSumReducer) / e.length).toFixed(2));
 	});
 	console.log(`3-1. 각 학생의 평균점수 \n[${studentAverageGradeArr}]\n`);
 
@@ -67,7 +71,7 @@ function caculateAverageGrade() {
 		studentAverageMaxGradeArr.push((e.reduce(selectMaxGradegradeSumReducer)));
 	});
 
-	console.log(`3-2. 모든 학생의 최고점수의 평균점수 \n[${Math.round(studentAverageMaxGradeArr.reduce(gradeSumReducer) / studentAverageMaxGradeArr.length)}]\n`);
+	console.log(`3-2. 모든 학생의 최고점수의 평균점수 \n[${(studentAverageMaxGradeArr.reduce(gradeSumReducer) / studentAverageMaxGradeArr.length).toFixed(2)}]\n`);
 }
 
 caculateAverageGrade();
@@ -107,13 +111,11 @@ function getKeysInNumberType() {
 	Object.values(data).forEach(memberObject => {
 		keysInNumberTypeArr.push(Object.keys(memberObject).filter(key => typeof memberObject[key] === "number"));
 	});
-
 	return keysInNumberTypeArr;
 }
 
+// console.log(`4. 배열 만들기 \n[${getKeysInNumberType()}]\n`);
 console.log(`4. 배열 만들기 \n[${getKeysInNumberType().flat(Infinity)}]\n`);
-// console.log(Object.values(memberObject).filter(m => typeof m === "number"));
-// console.log(Object.keys(memberObject).filter(key => typeof memberObject[key] === "number"));
 //#endregion
 
 //#region 5. 배열 결과 출력
@@ -202,30 +204,29 @@ const complexData = [{
 
 const skTypeNameArr = [];
 
-function getObject(theObject) {
-	if (theObject instanceof Array) {
-		for (var i = 0; i < theObject.length; i++) {
-			getObject(theObject[i]);
+function getNameArr(object, objPropName, objPropValue) {
+	if (object instanceof Array) {
+		for (var i = 0; i < object.length; i++) {
+			getNameArr(object[i], objPropName, objPropValue);
 		}
 	}
 	else {
-		for (var prop in theObject) {
-			// console.log(prop + ': ' + theObject[prop]);
-			if (prop == 'propType') {
-				if (theObject[prop] == "sk") {
-					skTypeNameArr.push(theObject.name);
+		for (var prop in object) {
+			if (prop == objPropName) {
+				if (object[prop] == objPropValue) {
+					skTypeNameArr.push(object.name);
 					continue;
 				}
 			}
-			if (theObject[prop] instanceof Object || theObject[prop] instanceof Array) {
-				getObject(theObject[prop]);
+			if (object[prop] instanceof Object || object[prop] instanceof Array) {
+				getNameArr(object[prop], objPropName, objPropValue);
 			}
 		}
 	}
 }
 
 function printNameByType() {
-	getObject(complexData);
+	getNameArr(complexData, 'propType', 'sk');
 	console.log(`5. 배열 결과 출력\n[${skTypeNameArr}]\n`);
 }
 
