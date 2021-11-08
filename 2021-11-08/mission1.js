@@ -14,6 +14,13 @@ MyMap.prototype.isKeyExist = function (key) {
 
 MyMap.prototype.put = function (key, value) {
     this.isKeyExist(key);
+    // const test = [].reduce.call(value,
+    //     function (hash, i) {
+    //         var chr = i.charCodeAt(0);
+    //         hash = (hash << 5 - hash) + chr;
+    //         return hash | 0;
+    //     }, 0);
+    console.log()
     this.keyValueArr.push({ [key]: value });
 }
 
