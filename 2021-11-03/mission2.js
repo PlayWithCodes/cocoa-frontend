@@ -59,8 +59,6 @@ function caculateAverageGrade() {
 	const studentAverageGradeArr = [];
 	const studentAverageMaxGradeArr = [];
 	const gradeSumReducer = (previousGrade, currentGrade) => previousGrade + currentGrade;
-	const selectMaxGradegradeSumReducer 
-		= (previousGrade, currentGrade) => previousGrade > currentGrade ? previousGrade : currentGrade;
 
 	grades.forEach(e => {
 		studentAverageGradeArr.push((e.reduce(gradeSumReducer) / e.length).toFixed(2));
@@ -68,7 +66,7 @@ function caculateAverageGrade() {
 	console.log(`3-1. 각 학생의 평균점수 \n[${studentAverageGradeArr}]\n`);
 
 	grades.forEach(e => {
-		studentAverageMaxGradeArr.push((e.reduce(selectMaxGradegradeSumReducer)));
+		studentAverageMaxGradeArr.push(Math.max(...e));
 	});
 
 	console.log(`3-2. 모든 학생의 최고점수의 평균점수 \n[${(studentAverageMaxGradeArr.reduce(gradeSumReducer) / studentAverageMaxGradeArr.length).toFixed(2)}]\n`);
@@ -202,32 +200,30 @@ const complexData = [{
 	}]
 }]
 
-const skTypeNameArr = [];
-
-function getNameArr(object, objPropName, objPropValue) {
+function getNameArr(object, objPropName, objPropValue, nameArr) {
 	if (object instanceof Array) {
 		for (var i = 0; i < object.length; i++) {
-			getNameArr(object[i], objPropName, objPropValue);
+			getNameArr(object[i], objPropName, objPropValue, nameArr);
 		}
 	}
 	else {
 		for (var prop in object) {
 			if (prop == objPropName) {
 				if (object[prop] == objPropValue) {
-					skTypeNameArr.push(object.name);
+					nameArr.push(object.name);
 					continue;
 				}
 			}
 			if (object[prop] instanceof Object || object[prop] instanceof Array) {
-				getNameArr(object[prop], objPropName, objPropValue);
+				getNameArr(object[prop], objPropName, objPropValue, nameArr);
 			}
 		}
 	}
+	return nameArr;
 }
 
 function printNameByType() {
-	getNameArr(complexData, 'propType', 'sk');
-	console.log(`5. 배열 결과 출력\n[${skTypeNameArr}]\n`);
+	console.log(`5. 배열 결과 출력\n[${getNameArr(complexData, 'propType', 'sk', [])}]\n`);
 }
 
 printNameByType();
