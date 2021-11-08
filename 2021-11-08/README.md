@@ -12,3 +12,4 @@ Hash함수는 key를 입력하면 저장 위치인 배열의 index인 hash code�
 Hashtable 이름의 유래는 1차원 배열의 요소에 linked list가 2차원 배열로 연결된 모습이 table과 같아서 붙여짐  
 배열의 접근성과 linked list의 변경이 유리한 장점을 합친 형태  
 HashMap은 배열 초기 용량을 생성자로 받기도 함  
+- 자바의 정석, 남궁성
