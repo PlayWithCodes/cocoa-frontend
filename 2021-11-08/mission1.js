@@ -1,31 +1,35 @@
-function MyMap(iterable) {
-    this.keyValueArr = [];
-
-    iterable?.forEach(element => {
-        this.keyValueArr.push({ [Object.keys(element)[0]]: Object.values(element)[0] });
-    });
-}
-
-MyMap.prototype.isKeyExist = function (key) {
-    if (this.containsKey(key)) {
-        throw new Error("The same key exists in the map.");
+class Entry {
+    constructor(key, value) {
+        this.key = key;
+        this.value = value;
     }
 }
 
+function MyMap(iterable) {
+    this.keyValueArr = [];
+
+    iterable?.forEach(keyValueObj => {
+        this.keyValueArr.push(new Entry(...Object.keys(keyValueObj), ...Object.values(keyValueObj)));
+    });
+}
+
 MyMap.prototype.put = function (key, value) {
-    this.isKeyExist(key);
     // const test = [].reduce.call(value,
     //     function (hash, i) {
     //         var chr = i.charCodeAt(0);
     //         hash = (hash << 5 - hash) + chr;
     //         return hash | 0;
     //     }, 0);
-    console.log()
-    this.keyValueArr.push({ [key]: value });
+    if (this.containsKey(key)) {
+        this.replace(key, value);
+    }
+    else{
+        this.keyValueArr.push(new Entry(key, value));
+    }
 }
 
 MyMap.prototype.getIndex = function (key) {
-    return this.keyValueArr.findIndex(o => Object.keys(o)[0] === key);
+    return this.keyValueArr.findIndex(o => o.key === key);
 }
 
 MyMap.prototype.remove = function (key) {
@@ -45,13 +49,13 @@ MyMap.prototype.containsKey = function (key) {
 }
 
 MyMap.prototype.get = function (key) {
-    const obj = this.keyValueArr.find(o => Object.keys(o)[0] === key);
+    const keyValueObj = this.keyValueArr.find(keyValueObj => keyValueObj.key === key);
 
-    if (typeof obj !== 'undefined') {
-        return obj[key];
+    if (typeof keyValueObj !== 'undefined') {
+        return keyValueObj.value;
     }
 
-    return obj;
+    return keyValueObj;
 }
 
 MyMap.prototype.getLength = function () {
@@ -68,15 +72,15 @@ MyMap.prototype.isEmpty = function () {
 
 MyMap.prototype.keys = function () {
     const keys = [];
-    this.keyValueArr.forEach(function (item, i, array) {
-        keys.push(...Object.keys(item));
+    this.keyValueArr.forEach(keyValueObj => {
+        keys.push(keyValueObj.key);
     });
     return keys;
 }
 
 MyMap.prototype.replace = function (key, value) {
     this.remove(key);
-    this.keyValueArr.push({ [key]: value });
+    this.keyValueArr.push(new Entry(key, value));
 }
 
 MyMap.prototype.size = function () {
@@ -89,8 +93,9 @@ MyMap.prototype.clear = function () {
 
 const mapConstructorTest = new MyMap([{ '1': 'one' }, { '2': 'two' }]);
 mapConstructorTest.put('3', 'three');
+mapConstructorTest.put('3', 'sam');
 mapConstructorTest.remove('2');
-console.log(`containsKey: ${mapConstructorTest.containsKey('2')}`);
+console.log(`containsKey: ${mapConstructorTest.containsKey('1')}`);
 console.log(`get: ${mapConstructorTest.get('1')}`);
 console.log(`isEmpty: ${mapConstructorTest.isEmpty()}`);
 console.log(`keys: ${mapConstructorTest.keys()}`);
