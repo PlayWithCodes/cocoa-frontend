@@ -6,10 +6,10 @@ class Entry {
 }
 
 function MyMap(iterable) {
-    this.keyValueArr = [];
+    this.keyValueObjArr = [];
 
     iterable?.forEach(keyValueObj => {
-        this.keyValueArr.push(new Entry(...Object.keys(keyValueObj), ...Object.values(keyValueObj)));
+        this.keyValueObjArr.push(new Entry(...Object.keys(keyValueObj), ...Object.values(keyValueObj)));
     });
 }
 
@@ -24,18 +24,18 @@ MyMap.prototype.put = function (key, value) {
         this.replace(key, value);
     }
     else{
-        this.keyValueArr.push(new Entry(key, value));
+        this.keyValueObjArr.push(new Entry(key, value));
     }
 }
 
 MyMap.prototype.getIndex = function (key) {
-    return this.keyValueArr.findIndex(o => o.key === key);
+    return this.keyValueObjArr.findIndex(o => o.key === key);
 }
 
 MyMap.prototype.remove = function (key) {
     const index = this.getIndex(key);
     if (index !== -1) {
-        this.keyValueArr.splice(index, 1);
+        this.keyValueObjArr.splice(index, 1);
     }
 }
 
@@ -49,7 +49,7 @@ MyMap.prototype.containsKey = function (key) {
 }
 
 MyMap.prototype.get = function (key) {
-    const keyValueObj = this.keyValueArr.find(keyValueObj => keyValueObj.key === key);
+    const keyValueObj = this.keyValueObjArr.find(keyValueObj => keyValueObj.key === key);
 
     if (typeof keyValueObj !== 'undefined') {
         return keyValueObj.value;
@@ -59,12 +59,12 @@ MyMap.prototype.get = function (key) {
 }
 
 MyMap.prototype.getLength = function () {
-    return this.keyValueArr.length;
+    return this.keyValueObjArr.length;
 }
 
 MyMap.prototype.isEmpty = function () {
     let result = true;
-    if (this.getLength() > 0) {
+    if (this.getLength()) {
         result = false;
     }
     return result;
@@ -72,7 +72,7 @@ MyMap.prototype.isEmpty = function () {
 
 MyMap.prototype.keys = function () {
     const keys = [];
-    this.keyValueArr.forEach(keyValueObj => {
+    this.keyValueObjArr.forEach(keyValueObj => {
         keys.push(keyValueObj.key);
     });
     return keys;
@@ -80,7 +80,7 @@ MyMap.prototype.keys = function () {
 
 MyMap.prototype.replace = function (key, value) {
     this.remove(key);
-    this.keyValueArr.push(new Entry(key, value));
+    this.keyValueObjArr.push(new Entry(key, value));
 }
 
 MyMap.prototype.size = function () {
@@ -88,7 +88,7 @@ MyMap.prototype.size = function () {
 }
 
 MyMap.prototype.clear = function () {
-    this.keyValueArr = [];
+    this.keyValueObjArr = [];
 }
 
 const mapConstructorTest = new MyMap([{ '1': 'one' }, { '2': 'two' }]);
