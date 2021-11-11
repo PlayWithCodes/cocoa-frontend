@@ -1,3 +1,5 @@
+// 야매소스입니다. 야매소스입니다. 야매소스입니다.  야매소스입니다.  야매소스입니다. 
+
 const data = "[1,2,[3,4,[5,[6]]]]";
 
 function run(data) {
@@ -8,10 +10,10 @@ function run(data) {
 
 function getAnalizedString(letterArr) {
     let leftBracketCount = 0, rightBracketCount = 0, elementCount = 0;
-    const numberFilteringRegExp = new RegExp(/[A-Za-z0-9]/gi);
+    const elementFilteringRegExp = new RegExp(/[A-Za-z0-9]/gi);
 
     letterArr.forEach(letter => {
-        if (numberFilteringRegExp.test(letter)) {
+        if (elementFilteringRegExp.test(letter)) {
             elementCount++;
         } else {
             switch (letter) {
@@ -32,14 +34,14 @@ function getAnalizedString(letterArr) {
 
 function printParsedStructure(letterArr) {
     let prevLetter = '', spacing = '', structureString = [];
-    const numberFilteringRegExp = new RegExp(/[0-9]/gi);
+    const elementFilteringRegExp = new RegExp(/[A-Za-z0-9]/gi);
 
     letterArr.forEach(letter => {
         if (prevLetter === '[') {
             spacing += '\t';
         } else if (prevLetter === ']') {
             spacing = spacing.substring(1);
-        } else if (numberFilteringRegExp.test(prevLetter) && letter === ']') {
+        } else if (elementFilteringRegExp.test(prevLetter) && letter === ']') {
             spacing = spacing.substring(1);
             structureString += '\n';
         }
