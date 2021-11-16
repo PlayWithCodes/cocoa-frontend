@@ -35,6 +35,7 @@ const getStudentScoreArr = function (rl) {
     });
 
     studentArr.push(new StudentScore(studentName, korScore, engScore, mathScore));
+
   }
 
 // 비동기 테스트
