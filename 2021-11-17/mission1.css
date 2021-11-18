@@ -28,8 +28,6 @@ button {
     padding: 0.5rem 0.7rem;
     border-radius: 3px;
     font-size: 1.3rem;
-    /* display: inline-block;
-    -webkit-appearance: none; */
 }
 
 input[type=text] {
