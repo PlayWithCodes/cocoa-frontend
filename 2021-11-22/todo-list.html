@@ -121,21 +121,21 @@
       constructor(task) {
         this.task = task;
       }
-      getCheckBox() {
+      setCheckBox() {
         const $checkBox = document.createElement('input');
         $checkBox.type = 'checkbox';
-        return $checkBox;
+        this.#checkBox = $checkBox;
       }
-      getListLabel() {
+      setListLabel() {
         const $listLabel = document.createElement('label');
         const $toDoListTextInput = document.createElement('input');
         $toDoListTextInput.type = 'text';
         $toDoListTextInput.value = this.task;
         $toDoListTextInput.readOnly = true;
         $listLabel.append($toDoListTextInput)
-        return $listLabel;
+        this.#listLabel = $listLabel;
       }
-      toggleEditSaveLink(that, saveIcon, editIcon, isReadOnly) {
+      toggleEditSaveLink() {
         return function (that, saveIcon, editIcon, isReadOnly) {
           const $saveIconSpan = that.parentElement.querySelector('.glyphicon-save');
           $saveIconSpan.style.display = saveIcon;
@@ -153,7 +153,7 @@
         $editIcon.className = className;
         return $editIcon;
       }
-      getSaveLink() {
+      setSaveLink() {
         const $saveLink = document.createElement('a');
         $saveLink.href = '#';
 
@@ -165,9 +165,9 @@
         const $saveIcon = this.getIcon('glyphicon glyphicon-save');
         $saveIcon.style.display = 'none';
         $saveLink.append($saveIcon);
-        return $saveLink;
+        this.#saveLink = $saveLink;
       }
-      getEditLink() {
+      setEditLink() {
         const $editLink = document.createElement('a');
         $editLink.href = '#';
 
@@ -178,9 +178,9 @@
 
         const $editIcon = this.getIcon('glyphicon glyphicon-pencil');
         $editLink.append($editIcon);
-        return $editLink;
+        this.#editLink = $editLink;
       }
-      getDeleteLink() {
+      setDeleteLink() {
         const $deleteLink = document.createElement('a');
         $deleteLink.href = '#';
         $deleteLink.onclick = function () {
@@ -189,20 +189,20 @@
 
         const $deleteIcon = this.getIcon('glyphicon glyphicon-trash');
         $deleteLink.append($deleteIcon);
-        return $deleteLink;
+        this.#deleteLink = $deleteLink;
       }
-      getListElement() {
+      setListElement() {
         const $newListElement = document.createElement('li');
         $newListElement.append(this.#checkBox, this.#listLabel, this.#deleteLink, this.#editLink, this.#saveLink);
-        return $newListElement;
+        this.#toDoListElement = $newListElement;
       }
       getNewListElement() {
-        this.#checkBox = this.getCheckBox();
-        this.#listLabel = this.getListLabel();
-        this.#saveLink = this.getSaveLink();
-        this.#editLink = this.getEditLink();
-        this.#deleteLink = this.getDeleteLink();
-        this.#toDoListElement = this.getListElement();
+        this.setCheckBox();
+        this.setListLabel();
+        this.setSaveLink();
+        this.setEditLink();
+        this.setDeleteLink();
+        this.setListElement();
         return this.#toDoListElement;
       }
     }
@@ -213,9 +213,6 @@
         this.id = 0;
       }
       addElementToToDoList(toDoElement) {
-        // const id = this.id++;
-        // toDoElement.childNodes[0].id = id; // checkbox
-        // toDoElement.childNodes[1].htmlFor = id; // label
         this.$taskList.append(toDoElement);
       }
     }
