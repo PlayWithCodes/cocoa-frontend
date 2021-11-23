@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ToDo List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+    header {
+      background-color: darkkhaki;
+      color: #fff;
+      padding: 10px 10px 10px 20px;
+      font-size: 20px;
+    }
+
+    main {
+      width: 600px;
+      margin: 0px auto;
+      padding: 30px;
+    }
+
+    input[type="text"],
+    button {
+      height: 25px;
+    }
+
+    input[type="text"] {
+      width: 400px;
+    }
+
+    #input-wrapper input {
+      width: 70%;
+      border: 1px solid lightgray;
+      padding: 0px 10px;
+      outline: none;
+    }
+
+    button {
+      width: 10%;
+      background-color: darkkhaki;
+      border-style: none;
+      border-radius: 3px;
+      color: #fff;
+    }
+
+    #input-wrapper {
+      text-align: center;
+      margin: 20px 0px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      text-align: left;
+      background-color: rgb(241, 239, 212);
+      margin: 5px;
+      padding: 10px;
+    }
+
+    input[type='checkbox'] {
+      margin-right: 10px;
+    }
+
+    input[type='checkbox']:checked+label>input {
+      text-decoration: line-through;
+    }
+
+    li a {
+      float: right;
+      margin: 3px;
+    }
+
+    .glyphicon-trash {
+      color: red;
+    }
+
+    .glyphicon-edit {
+      color: dodgerblue;
+    }
+
+    h2 {
+      color: darkkhaki;
+    }
+
+    label input {
+      background: none;
+      border: none;
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header>ToDoList</header>
+
+  <main>
+    <h2>ToDo List</h2>
+    <div id="input-wrapper">
+      <input type="text" placeholder="New Task">
+      <button>Add</button>
+    </div>
+    <ul></ul>
+  </main>
+
+  <script>
+    class ToDoListElement {
+      #checkBox;
+      #listLabel;
+      #saveLink;
+      #editLink;
+      #deleteLink;
+      #toDoListElement;
+      constructor(task) {
+        this.task = task;
+      }
+      getCheckBox() {
+        const $checkBox = document.createElement('input');
+        $checkBox.type = 'checkbox';
+        return $checkBox;
+      }
+      getListLabel() {
+        const $listLabel = document.createElement('label');
+        const $toDoListTextInput = document.createElement('input');
+        $toDoListTextInput.type = 'text';
+        $toDoListTextInput.value = this.task;
+        $toDoListTextInput.readOnly = true;
+        $listLabel.append($toDoListTextInput)
+        return $listLabel;
+      }
+      toggleEditSaveLink(that, saveIcon, editIcon, isReadOnly) {
+        return function (that, saveIcon, editIcon, isReadOnly) {
+          const $saveIconSpan = that.parentElement.querySelector('.glyphicon-save');
+          $saveIconSpan.style.display = saveIcon;
+
+          const $editIconSpan = that.parentElement.querySelector('.glyphicon-pencil');
+          $editIconSpan.style.display = editIcon;
+
+          const $toDoListTextInput = that.parentElement.childNodes[1].childNodes[0];
+          $toDoListTextInput.readOnly = isReadOnly;
+          if (!isReadOnly) { $toDoListTextInput.focus(); }
+        }
+      }
+      getIcon(className) {
+        const $editIcon = document.createElement('span');
+        $editIcon.className = className;
+        return $editIcon;
+      }
+      getSaveLink() {
+        const $saveLink = document.createElement('a');
+        $saveLink.href = '#';
+
+        const toggleEditSaveLink = this.toggleEditSaveLink();
+        $saveLink.onclick = function () {
+          toggleEditSaveLink($saveLink, 'none', 'inline', true);
+        }
+
+        const $saveIcon = this.getIcon('glyphicon glyphicon-save');
+        $saveIcon.style.display = 'none';
+        $saveLink.append($saveIcon);
+        return $saveLink;
+      }
+      getEditLink() {
+        const $editLink = document.createElement('a');
+        $editLink.href = '#';
+
+        const toggleEditSaveLink = this.toggleEditSaveLink();
+        $editLink.onclick = function () {
+          toggleEditSaveLink($editLink, 'inline', 'none', false);
+        }
+
+        const $editIcon = this.getIcon('glyphicon glyphicon-pencil');
+        $editLink.append($editIcon);
+        return $editLink;
+      }
+      getDeleteLink() {
+        const $deleteLink = document.createElement('a');
+        $deleteLink.href = '#';
+        $deleteLink.onclick = function () {
+          this.parentElement.remove();
+        }
+
+        const $deleteIcon = this.getIcon('glyphicon glyphicon-trash');
+        $deleteLink.append($deleteIcon);
+        return $deleteLink;
+      }
+      getListElement() {
+        const $newListElement = document.createElement('li');
+        $newListElement.append(this.#checkBox, this.#listLabel, this.#deleteLink, this.#editLink, this.#saveLink);
+        return $newListElement;
+      }
+      getNewListElement() {
+        this.#checkBox = this.getCheckBox();
+        this.#listLabel = this.getListLabel();
+        this.#saveLink = this.getSaveLink();
+        this.#editLink = this.getEditLink();
+        this.#deleteLink = this.getDeleteLink();
+        this.#toDoListElement = this.getListElement();
+        return this.#toDoListElement;
+      }
+    }
+
+    class ToDoListManager {
+      constructor() {
+        this.$taskList = document.querySelector('ul');
+        this.id = 0;
+      }
+      addElementToToDoList(toDoElement) {
+        // const id = this.id++;
+        // toDoElement.childNodes[0].id = id; // checkbox
+        // toDoElement.childNodes[1].htmlFor = id; // label
+        this.$taskList.append(toDoElement);
+      }
+    }
+
+    function initializeTaskInput($input) {
+      $input.value = '';
+      $input.focus();
+    }
+
+    function main() {
+      const $inputTask = document.querySelector('input');
+      const $addButton = document.querySelector('button');
+      const toDoListManager = new ToDoListManager();
+
+      $addButton.addEventListener('click', () => {
+        const toDoListElement = new ToDoListElement($inputTask.value);
+        toDoListManager.addElementToToDoList(toDoListElement.getNewListElement());
+
+        initializeTaskInput($inputTask);
+      });
+    }
+
+    main();
+  </script>
+</body>
+
+</html>
